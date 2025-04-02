@@ -27,7 +27,8 @@ export class GoogleCustomSearch {
     }
 
     const query = `${ingredients} レシピ`
-    const url = `https://www.googleapis.com/customsearch/v1?key=${this.apiKey}&cx=${this.searchEngineId}&q=${encodeURIComponent(query)}&searchType=image`
+    // searchType=image パラメータを削除して通常の検索結果を取得
+    const url = `https://www.googleapis.com/customsearch/v1?key=${this.apiKey}&cx=${this.searchEngineId}&q=${encodeURIComponent(query)}`
 
     try {
       const response = await fetch(url)
@@ -42,12 +43,25 @@ export class GoogleCustomSearch {
         return []
       }
 
-      return data.items.map((item: any) => ({
-        title: item.title,
-        link: item.link,
-        snippet: item.snippet || "",
-        image: item.pagemap?.cse_image?.[0]?.src || item.link,
-      }))
+      // 検索結果から必要な情報を抽出
+      return data.items.map((item: any) => {
+        // サムネイル画像があれば使用、なければページ内の画像を探す
+        let imageUrl = null
+        if (item.pagemap?.cse_image?.[0]?.src) {
+          imageUrl = item.pagemap.cse_image[0].src
+        } else if (item.pagemap?.cse_thumbnail?.[0]?.src) {
+          imageUrl = item.pagemap.cse_thumbnail[0].src
+        } else if (item.pagemap?.metatags?.[0]?.["og:image"]) {
+          imageUrl = item.pagemap.metatags[0]["og:image"]
+        }
+
+        return {
+          title: item.title,
+          link: item.link,
+          snippet: item.snippet || "",
+          image: imageUrl || "/placeholder.svg?height=140&width=280",
+        }
+      })
     } catch (error) {
       console.error("Error fetching from Google Custom Search API:", error)
       // エラーが発生した場合もモックデータを返す

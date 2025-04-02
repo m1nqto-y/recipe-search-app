@@ -132,16 +132,26 @@ export default function Home() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {recipes.map((recipe, index) => (
-          <div key={index} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <a href={recipe.link} target="_blank" rel="noopener noreferrer" className="block h-full">
-              <img
-                src={recipe.image || "/placeholder.svg?height=140&width=280"}
-                alt={recipe.title}
-                className="w-full h-36 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="font-semibold mb-2 truncate">{recipe.title}</h3>
-                <p className="text-sm text-gray-600">{recipe.snippet}</p>
+          <div
+            key={index}
+            className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full flex flex-col"
+          >
+            <a href={recipe.link} target="_blank" rel="noopener noreferrer" className="block flex-1 flex flex-col">
+              <div className="h-36 overflow-hidden">
+                <img
+                  src={recipe.image || "/placeholder.svg?height=140&width=280"}
+                  alt={recipe.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // 画像読み込みエラー時にプレースホルダー画像を表示
+                    ;(e.target as HTMLImageElement).src = "/placeholder.svg?height=140&width=280"
+                  }}
+                />
+              </div>
+              <div className="p-4 flex-1 flex flex-col">
+                <h3 className="font-semibold mb-2 line-clamp-2">{recipe.title}</h3>
+                <p className="text-sm text-gray-600 line-clamp-3 flex-1">{recipe.snippet}</p>
+                <div className="mt-2 text-xs text-right text-orange-500 hover:underline">レシピを見る →</div>
               </div>
             </a>
           </div>
@@ -160,7 +170,7 @@ export default function Home() {
             <div className="py-1">
               <p>注意: Google API キーが設定されていないため、モックデータを表示しています。</p>
             </div>
-            <button onClick={handleCloseWarning} className="ml-auto text-yellow-700">
+            <button onClick={handleCloseWarning} className="ml-auto text-gray-700">
               <X size={18} />
             </button>
           </div>
