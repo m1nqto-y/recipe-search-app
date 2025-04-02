@@ -1,26 +1,7 @@
 "use client"
 
 import { useState, type KeyboardEvent } from "react"
-import {
-  Container,
-  Typography,
-  Button,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  CardActionArea,
-  Box,
-  Chip,
-  CircularProgress,
-  Divider,
-  Paper,
-  InputBase,
-  IconButton,
-  Alert,
-  Snackbar,
-} from "@mui/material"
-import { PlusIcon, SearchIcon } from "lucide-react"
+import { X, Plus, Search } from "lucide-react"
 import { searchRecipes } from "@/lib/actions"
 
 interface Recipe {
@@ -85,129 +66,107 @@ export default function Home() {
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      <Box textAlign="center" mb={6}>
-        <Typography variant="h3" component="h1" gutterBottom>
-          レシピ検索
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" mb={4}>
-          食材を入力して、おいしいレシピを見つけましょう
-        </Typography>
+    <div className="container mx-auto py-8 px-4">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold mb-2">レシピ検索</h1>
+        <p className="text-gray-600 mb-6">食材を入力して、おいしいレシピを見つけましょう</p>
 
-        <Paper
-          component="div"
-          sx={{
-            p: "8px 16px",
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: 1,
-            mb: 2,
-            maxWidth: 600,
-            mx: "auto",
-            border: "1px solid",
-            borderColor: "divider",
-            borderRadius: 1,
-            backgroundColor: "background.paper",
-          }}
-        >
-          <Typography variant="body2" color="text.secondary" sx={{ mr: 1 }}>
-            検索する食材:
-          </Typography>
+        <div className="flex flex-wrap items-center gap-2 p-3 border border-gray-300 rounded-lg mb-4 max-w-xl mx-auto bg-white">
+          <span className="text-sm text-gray-500 mr-1">検索する食材:</span>
 
           {ingredients.map((ingredient) => (
-            <Chip
-              key={ingredient}
-              label={ingredient}
-              onDelete={() => handleDeleteIngredient(ingredient)}
-              size="small"
-              sx={{ borderRadius: "16px" }}
-            />
+            <div key={ingredient} className="flex items-center bg-gray-100 px-2 py-1 rounded-full text-sm">
+              {ingredient}
+              <button
+                onClick={() => handleDeleteIngredient(ingredient)}
+                className="ml-1 text-gray-500 hover:text-gray-700"
+              >
+                <X size={14} />
+              </button>
+            </div>
           ))}
 
-          <Box sx={{ display: "flex", flex: "1 1 auto", minWidth: "120px" }}>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
+          <div className="flex flex-1 min-w-[120px]">
+            <input
+              className="flex-1 outline-none text-sm"
               placeholder="食材を入力"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-            <IconButton size="small" onClick={handleAddIngredient} disabled={!inputValue.trim()} sx={{ p: "5px" }}>
-              <PlusIcon size={16} />
-              <Typography variant="caption" sx={{ ml: 0.5 }}>
-                単語を追加
-              </Typography>
-            </IconButton>
-          </Box>
-        </Paper>
+            <button
+              onClick={handleAddIngredient}
+              disabled={!inputValue.trim()}
+              className="flex items-center text-sm text-gray-600 hover:text-gray-800 disabled:opacity-50"
+            >
+              <Plus size={14} />
+              <span className="ml-1">単語を追加</span>
+            </button>
+          </div>
+        </div>
 
-        <Button
-          variant="contained"
-          color="primary"
+        <button
           onClick={handleSearch}
           disabled={loading || ingredients.length === 0}
-          startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <SearchIcon size={20} />}
-          sx={{ mt: 2 }}
+          className="flex items-center justify-center mx-auto px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 disabled:opacity-50"
         >
-          {loading ? "検索中..." : "レシピを検索"}
-        </Button>
+          {loading ? (
+            <span>検索中...</span>
+          ) : (
+            <>
+              <Search size={18} className="mr-1" />
+              <span>レシピを検索</span>
+            </>
+          )}
+        </button>
 
-        {error && (
-          <Typography color="error" sx={{ mt: 2 }}>
-            {error}
-          </Typography>
-        )}
-      </Box>
+        {error && <p className="text-red-500 mt-2">{error}</p>}
+      </div>
 
       {ingredients.length > 0 && recipes.length > 0 && (
-        <Box mb={2}>
-          <Typography variant="h6" gutterBottom>
-            「{ingredients.join("、")}」のレシピ検索結果
-          </Typography>
-          <Divider sx={{ mb: 3 }} />
-        </Box>
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold mb-2">「{ingredients.join("、")}」のレシピ検索結果</h2>
+          <hr className="mb-6" />
+        </div>
       )}
 
-      <Grid container spacing={3}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {recipes.map((recipe, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-              <CardActionArea component="a" href={recipe.link} target="_blank" rel="noopener noreferrer">
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={recipe.image || "/placeholder.svg?height=140&width=280"}
-                  alt={recipe.title}
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h6" component="h2" noWrap>
-                    {recipe.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {recipe.snippet}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
+          <div key={index} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <a href={recipe.link} target="_blank" rel="noopener noreferrer" className="block h-full">
+              <img
+                src={recipe.image || "/placeholder.svg?height=140&width=280"}
+                alt={recipe.title}
+                className="w-full h-36 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="font-semibold mb-2 truncate">{recipe.title}</h3>
+                <p className="text-sm text-gray-600">{recipe.snippet}</p>
+              </div>
+            </a>
+          </div>
         ))}
-      </Grid>
+      </div>
 
       {ingredients.length > 0 && recipes.length === 0 && !loading && (
-        <Box textAlign="center" mt={4}>
-          <Typography variant="h6" color="text.secondary">
-            レシピが見つかりませんでした。別の食材を試してみてください。
-          </Typography>
-        </Box>
+        <div className="text-center mt-8">
+          <p className="text-lg text-gray-600">レシピが見つかりませんでした。別の食材を試してみてください。</p>
+        </div>
       )}
 
-      <Snackbar open={showApiWarning} autoHideDuration={6000} onClose={handleCloseWarning}>
-        <Alert onClose={handleCloseWarning} severity="warning" sx={{ width: "100%" }}>
-          注意: Google API キーが設定されていないため、モックデータを表示しています。
-        </Alert>
-      </Snackbar>
-    </Container>
+      {showApiWarning && (
+        <div className="fixed bottom-4 right-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow-md">
+          <div className="flex">
+            <div className="py-1">
+              <p>注意: Google API キーが設定されていないため、モックデータを表示しています。</p>
+            </div>
+            <button onClick={handleCloseWarning} className="ml-auto text-yellow-700">
+              <X size={18} />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
