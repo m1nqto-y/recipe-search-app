@@ -69,7 +69,7 @@ export default function Home() {
     <div className="container mx-auto py-8 px-4">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">レシピ検索</h1>
-        <p className="text-gray-600 mb-6">食材を入力して、おいしいレシピを見つけましょう</p>
+        <p className="text-gray-600 mb-6">食材を入力して、レシピを見つけましょう</p>
 
         <div className="flex flex-wrap items-center gap-2 p-3 border border-gray-300 rounded-lg mb-4 max-w-xl mx-auto bg-white">
           <span className="text-sm text-gray-500 mr-1">検索する食材:</span>
