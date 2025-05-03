@@ -66,29 +66,39 @@ export default function Home() {
     setShowApiWarning(false)
   }
 
+  const handleDeleteIngredient = (ingredientToDelete: string) => {
+    setIngredients(ingredients.filter((ingredient) => ingredient !== ingredientToDelete))
+  }
+
   return (
     <div className="container mx-auto py-8 px-4 pb-20 flex flex-col h-screen">
       {recipes.length === 0 ? (
         <>
           <div className="flex-grow flex flex-col justify-center">
-            <p className="text-2xl mb-auto mt-16 leading-relaxed">食材を入力して、おいしいレシピを見つけましょう</p>
+            <p className="text-2xl mb-auto mt-16 leading-relaxed">
+              食材を入力して
+              <br />
+              おいしいレシピを見つけましょう
+            </p>
           </div>
 
           <div className="mb-16">
             <div className="relative mb-4">
-              <div className="border border-gray-300 rounded-lg flex items-center p-2 bg-white">
-                <span className="text-sm text-gray-500 mr-2 whitespace-nowrap">検索する食材:</span>
-                <input
-                  className="flex-1 outline-none text-sm"
-                  placeholder="食材を入力"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
+              <div className="border border-gray-300 rounded-lg flex flex-col p-2 bg-white">
+                <div className="flex items-center mb-2">
+                  <span className="text-sm text-gray-500 mr-2 whitespace-nowrap">検索する食材:</span>
+                  <input
+                    className="flex-1 outline-none text-sm min-w-0"
+                    placeholder="食材を入力"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                  />
+                </div>
                 <button
                   onClick={handleAddIngredient}
                   disabled={!inputValue.trim()}
-                  className="text-sm text-gray-600 hover:text-gray-800 disabled:opacity-50 ml-1 whitespace-nowrap"
+                  className="text-sm text-gray-600 hover:text-gray-800 disabled:opacity-50 self-end"
                 >
                   <Plus size={16} className="inline mr-1" />
                   <span>単語を追加</span>
@@ -98,9 +108,15 @@ export default function Home() {
               {ingredients.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2">
                   {ingredients.map((ingredient) => (
-                    <span key={ingredient} className="bg-gray-100 px-2 py-1 rounded-full text-xs">
+                    <div key={ingredient} className="bg-gray-100 px-2 py-1 rounded-full text-xs flex items-center">
                       {ingredient}
-                    </span>
+                      <button
+                        onClick={() => handleDeleteIngredient(ingredient)}
+                        className="ml-1 text-gray-500 hover:text-gray-700"
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
                   ))}
                 </div>
               )}
