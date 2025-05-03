@@ -116,4 +116,3 @@ export class GoogleCustomSearch {
     return mockRecipes
   }
 }
-

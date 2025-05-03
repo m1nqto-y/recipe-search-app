@@ -66,11 +66,10 @@ export default function Home() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto py-8 px-4 pb-20">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">レシピ検索</h1>
-        <p className="text-gray-600 mb-6">食材を入力して、レシピを見つけましょう。
-          このサービスはGoogle Cuustom Search Engineを利用しています。それに伴ってGoogleの利用規約とプライバシーポリシーが適用されます。</p>
+        <p className="text-gray-600 mb-6">食材を入力して、おいしいレシピを見つけましょう</p>
 
         <div className="flex flex-wrap items-center gap-2 p-3 border border-gray-300 rounded-lg mb-4 max-w-xl mx-auto bg-white">
           <span className="text-sm text-gray-500 mr-1">検索する食材:</span>
@@ -166,7 +165,7 @@ export default function Home() {
       )}
 
       {showApiWarning && (
-        <div className="fixed bottom-4 right-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow-md">
+        <div className="fixed bottom-20 right-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow-md">
           <div className="flex">
             <div className="py-1">
               <p>注意: Google API キーが設定されていないため、モックデータを表示しています。</p>
@@ -180,4 +179,3 @@ export default function Home() {
     </div>
   )
 }
-
