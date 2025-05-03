@@ -19,7 +19,7 @@ export default function MenuPage() {
 
           <div className="flex justify-between border-b pb-2">
             <span className="text-gray-600">バージョン:</span>
-            <span className="font-medium">0.5.0</span>
+            <span className="font-medium">1.0.0</span>
           </div>
 
           <div className="flex justify-between border-b pb-2">
@@ -29,10 +29,13 @@ export default function MenuPage() {
 
           <div className="flex justify-between border-b pb-2">
             <span className="text-gray-600">開発者:</span>
-            <span className="font-medium">m1nqto</span>
+            <span className="font-medium">v0</span>
           </div>
         </div>
 
+        <div className="mt-6 text-center text-sm text-gray-500">
+          &copy; {new Date().getFullYear()} レシピ検索アプリ All Rights Reserved.
+        </div>
       </div>
     </div>
   )
