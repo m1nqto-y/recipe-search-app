@@ -29,12 +29,12 @@ export default function MenuPage() {
 
           <div className="flex justify-between border-b pb-2">
             <span className="text-gray-600">開発者:</span>
-            <span className="font-medium">v0</span>
+            <span className="font-medium">M1nqto</span>
           </div>
         </div>
 
         <div className="mt-6 text-center text-sm text-gray-500">
-          &copy; {new Date().getFullYear()} レシピ検索アプリ All Rights Reserved.
+          &copy; {new Date().getFullYear()} m1nqto-y All Rights Reserved.
         </div>
       </div>
     </div>
